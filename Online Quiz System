@@ -1,0 +1,62 @@
+// File: QuizApp.java
+import java.util.*;
+
+class Question {
+    private String question;
+    private String[] options;
+    private int correctOption;
+
+    public Question(String question, String[] options, int correctOption) {
+        this.question = question;
+        this.options = options;
+        this.correctOption = correctOption;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String[] getOptions() {
+        return options;
+    }
+
+    public int getCorrectOption() {
+        return correctOption;
+    }
+}
+
+public class QuizApp {
+    private static List<Question> questions = List.of(
+        new Question("What is the capital of France?", new String[]{"Berlin", "Madrid", "Paris", "Rome"}, 3),
+        new Question("What is 5 + 7?", new String[]{"10", "11", "12", "13"}, 3),
+        new Question("Who wrote '1984'?", new String[]{"Orwell", "Huxley", "Hemingway", "Dickens"}, 1)
+    );
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int score = 0;
+
+        System.out.println("Welcome to the Quiz!");
+
+        for (int i = 0; i < questions.size(); i++) {
+            Question q = questions.get(i);
+            System.out.printf("\nQuestion %d: %s%n", i + 1, q.getQuestion());
+
+            String[] options = q.getOptions();
+            for (int j = 0; j < options.length; j++) {
+                System.out.printf("%d. %s%n", j + 1, options[j]);
+            }
+
+            System.out.print("Your answer: ");
+            int answer = scanner.nextInt();
+            if (answer == q.getCorrectOption()) {
+                score++;
+                System.out.println("Correct!");
+            } else {
+                System.out.println("Wrong!");
+            }
+        }
+
+        System.out.printf("\nYour final score is %d/%d%n", score, questions.size());
+    }
+}
