@@ -1,0 +1,32 @@
+// File: GradeCalculator.java
+import java.util.*;
+
+public class GradeCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Double> grades = new ArrayList<>();
+
+        System.out.println("Enter grades (type -1 to finish):");
+        while (true) {
+            double grade = scanner.nextDouble();
+            if (grade == -1) break;
+            grades.add(grade);
+        }
+
+        double total = grades.stream().mapToDouble(Double::doubleValue).sum();
+        double average = total / grades.size();
+        System.out.printf("Average Grade: %.2f%n", average);
+
+        if (average >= 90) {
+            System.out.println("Grade: A");
+        } else if (average >= 80) {
+            System.out.println("Grade: B");
+        } else if (average >= 70) {
+            System.out.println("Grade: C");
+        } else if (average >= 60) {
+            System.out.println("Grade: D");
+        } else {
+            System.out.println("Grade: F");
+        }
+    }
+}
