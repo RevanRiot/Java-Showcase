@@ -1,0 +1,102 @@
+// File: InventoryManager.java
+import java.util.*;
+
+class Product {
+    private String name;
+    private int quantity;
+
+    public Product(String name, int quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void addQuantity(int amount) {
+        this.quantity += amount;
+    }
+
+    public void reduceQuantity(int amount) {
+        this.quantity -= amount;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - Quantity: " + quantity;
+    }
+}
+
+public class InventoryManager {
+    private static List<Product> inventory = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nInventory Management");
+            System.out.println("1. Add Product");
+            System.out.println("2. View Inventory");
+            System.out.println("3. Update Quantity");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1 -> addProduct(scanner);
+                case 2 -> viewInventory();
+                case 3 -> updateQuantity(scanner);
+                case 4 -> {
+                    System.out.println("Goodbye!");
+                    return;
+                }
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addProduct(Scanner scanner) {
+        System.out.print("Enter product name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter quantity: ");
+        int quantity = scanner.nextInt();
+        inventory.add(new Product(name, quantity));
+        System.out.println("Product added!");
+    }
+
+    private static void viewInventory() {
+        if (inventory.isEmpty()) {
+            System.out.println("No products in inventory.");
+        } else {
+            System.out.println("Inventory:");
+            for (Product product : inventory) {
+                System.out.println(product);
+            }
+        }
+    }
+
+    private static void updateQuantity(Scanner scanner) {
+        System.out.print("Enter product name: ");
+        String name = scanner.nextLine();
+        for (Product product : inventory) {
+            if (product.getName().equalsIgnoreCase(name)) {
+                System.out.print("Enter quantity to add (negative to reduce): ");
+                int quantity = scanner.nextInt();
+                if (quantity < 0 && product.getQuantity() + quantity < 0) {
+                    System.out.println("Not enough stock to reduce.");
+                } else {
+                    product.addQuantity(quantity);
+                    System.out.println("Quantity updated!");
+                }
+                return;
+            }
+        }
+        System.out.println("Product not found.");
+    }
+}
