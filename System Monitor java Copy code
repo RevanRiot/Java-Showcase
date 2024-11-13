@@ -1,0 +1,13 @@
+// File: SystemMonitor.java
+import java.lang.management.*;
+
+public class SystemMonitor {
+    public static void main(String[] args) {
+        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+        Runtime runtime = Runtime.getRuntime();
+
+        System.out.println("Available processors: " + osBean.getAvailableProcessors());
+        System.out.println("Free memory: " + runtime.freeMemory() / 1024 / 1024 + " MB");
+        System.out.println("Total memory: " + runtime.totalMemory() / 1024 / 1024 + " MB");
+    }
+}
