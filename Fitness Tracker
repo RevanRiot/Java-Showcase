@@ -1,0 +1,73 @@
+// File: FitnessTracker.java
+import java.util.*;
+
+class Workout {
+    private String activity;
+    private int duration; // in minutes
+
+    public Workout(String activity, int duration) {
+        this.activity = activity;
+        this.duration = duration;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    @Override
+    public String toString() {
+        return activity + " - " + duration + " minutes";
+    }
+}
+
+public class FitnessTracker {
+    private static List<Workout> workouts = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nFitness Tracker");
+            System.out.println("1. Add Workout");
+            System.out.println("2. View Workouts");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1 -> addWorkout(scanner);
+                case 2 -> viewWorkouts();
+                case 3 -> {
+                    System.out.println("Goodbye!");
+                    return;
+                }
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addWorkout(Scanner scanner) {
+        System.out.print("Enter activity: ");
+        String activity = scanner.nextLine();
+        System.out.print("Enter duration (minutes): ");
+        int duration = scanner.nextInt();
+        workouts.add(new Workout(activity, duration));
+        System.out.println("Workout added!");
+    }
+
+    private static void viewWorkouts() {
+        if (workouts.isEmpty()) {
+            System.out.println("No workouts recorded.");
+        } else {
+            System.out.println("Workouts:");
+            for (Workout workout : workouts) {
+                System.out.println(workout);
+            }
+        }
+    }
+}
