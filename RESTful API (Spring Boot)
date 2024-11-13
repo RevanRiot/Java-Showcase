@@ -1,0 +1,54 @@
+// File: RestApiApplication.java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RestApiApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(RestApiApplication.class, args);
+    }
+}
+
+// File: UserController.java
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    private List<User> users = new ArrayList<>();
+
+    @GetMapping
+    public List<User> getUsers() {
+        return users;
+    }
+
+    @PostMapping
+    public User addUser(@RequestBody User user) {
+        users.add(user);
+        return user;
+    }
+}
+
+// File: User.java
+public class User {
+    private String name;
+    private String email;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
