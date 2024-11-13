@@ -1,0 +1,72 @@
+// File: Blockchain.java
+import java.security.MessageDigest;
+import java.util.*;
+
+class Block {
+    private String data;
+    private String previousHash;
+    private String hash;
+
+    public Block(String data, String previousHash) {
+        this.data = data;
+        this.previousHash = previousHash;
+        this.hash = calculateHash();
+    }
+
+    public String calculateHash() {
+        String input = data + previousHash;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(input.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                hexString.append(Integer.toHexString(0xFF & b));
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
+    public String getData() {
+        return data;
+    }
+}
+
+public class Blockchain {
+    private List<Block> chain = new ArrayList<>();
+
+    public Blockchain() {
+        chain.add(new Block("Genesis Block", "0"));
+    }
+
+    public void addBlock(String data) {
+        Block previousBlock = chain.get(chain.size() - 1);
+        Block newBlock = new Block(data, previousBlock.getHash());
+        chain.add(newBlock);
+    }
+
+    public void displayBlockchain() {
+        for (Block block : chain) {
+            System.out.println("Data: " + block.getData());
+            System.out.println("Hash: " + block.getHash());
+            System.out.println("Previous Hash: " + block.getPreviousHash());
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        Blockchain blockchain = new Blockchain();
+        blockchain.addBlock("Transaction 1");
+        blockchain.addBlock("Transaction 2");
+        blockchain.displayBlockchain();
+    }
+}
