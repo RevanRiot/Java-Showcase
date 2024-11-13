@@ -1,0 +1,104 @@
+// File: LibraryApp.java
+import java.util.*;
+
+public class LibraryApp {
+    private static List<Book> books = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\nLibrary System");
+            System.out.println("1. Add Book");
+            System.out.println("2. View Books");
+            System.out.println("3. Borrow Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1 -> addBook(scanner);
+                case 2 -> viewBooks();
+                case 3 -> borrowBook(scanner);
+                case 4 -> returnBook(scanner);
+                case 5 -> {
+                    System.out.println("Goodbye!");
+                    return;
+                }
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addBook(Scanner scanner) {
+        System.out.print("Enter book title: ");
+        String title = scanner.nextLine();
+        System.out.print("Enter author name: ");
+        String author = scanner.nextLine();
+        books.add(new Book(title, author, true));
+        System.out.println("Book added!");
+    }
+
+    private static void viewBooks() {
+        System.out.println("\nBooks in Library:");
+        for (int i = 0; i < books.size(); i++) {
+            Book book = books.get(i);
+            System.out.printf("%d. %s by %s (%s)%n", i + 1, book.getTitle(), book.getAuthor(),
+                    book.isAvailable() ? "Available" : "Borrowed");
+        }
+    }
+
+    private static void borrowBook(Scanner scanner) {
+        System.out.print("Enter book number to borrow: ");
+        int index = scanner.nextInt() - 1;
+
+        if (index >= 0 && index < books.size() && books.get(index).isAvailable()) {
+            books.get(index).setAvailable(false);
+            System.out.println("You borrowed " + books.get(index).getTitle());
+        } else {
+            System.out.println("Invalid selection or book not available.");
+        }
+    }
+
+    private static void returnBook(Scanner scanner) {
+        System.out.print("Enter book number to return: ");
+        int index = scanner.nextInt() - 1;
+
+        if (index >= 0 && index < books.size() && !books.get(index).isAvailable()) {
+            books.get(index).setAvailable(true);
+            System.out.println("You returned " + books.get(index).getTitle());
+        } else {
+            System.out.println("Invalid selection or book not borrowed.");
+        }
+    }
+}
+
+class Book {
+    private String title;
+    private String author;
+    private boolean available;
+
+    public Book(String title, String author, boolean available) {
+        this.title = title;
+        this.author = author;
+        this.available = available;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+}
